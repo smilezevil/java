@@ -1,4 +1,7 @@
 public class task4 {
+    public static void main(String[] args) {
+        new task4().run();
+    }
     public void run() {
         System.out.println("\nЗавдання 4:");
         int limit = 55;

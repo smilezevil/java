@@ -1,4 +1,7 @@
 public class task5 {
+    public static void main(String[] args) {
+        new task5().run();
+    }
     public void run() {
         System.out.println("\nЗавдання 5:");
 
