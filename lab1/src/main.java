@@ -7,6 +7,5 @@ public class main {
         new task3().run();
         new task4().run();
         new task5().run();
-
     }
 }
