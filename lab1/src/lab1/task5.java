@@ -1,3 +1,5 @@
+package lab1;
+
 public class task5 {
     public static void main(String[] args) {
         new task5().run();
@@ -7,7 +9,7 @@ public class task5 {
 
         int[][] matrix = {
                 {5, 2, 3},
-                {4, 5, 6},
+                {4, 8   , 6},
                 {7, 8, 9}
         };
 

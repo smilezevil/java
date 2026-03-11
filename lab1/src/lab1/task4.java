@@ -1,10 +1,12 @@
+package lab1;
+
 public class task4 {
     public static void main(String[] args) {
         new task4().run();
     }
     public void run() {
         System.out.println("\nЗавдання 4:");
-        int limit = 55;
+        int limit = 100;
 
         int first = 0, second = 1;
         System.out.print("Ряд Фібоначчі до " + limit + ": ");

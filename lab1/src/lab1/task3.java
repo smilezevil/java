@@ -1,10 +1,12 @@
+package lab1;
+
 public class task3 {
     public static void main(String[] args) {
         new task3().run();
     }
     public void run() {
         System.out.println("\nЗавдання 3:");
-        char grade = '5';
+        int grade = '0';
 
         switch (grade) {
             case '5':
