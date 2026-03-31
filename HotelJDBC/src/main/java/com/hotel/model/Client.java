@@ -1,5 +1,6 @@
 package com.hotel.model;
 
+
 public class Client {
     private int clientId;
     private String fullName;
