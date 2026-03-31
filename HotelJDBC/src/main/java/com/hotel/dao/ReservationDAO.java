@@ -11,12 +11,13 @@ public class ReservationDAO implements GenericDAO<Reservation> {
 
     @Override
     public void create(Reservation r) throws Exception {
-        String sql = "INSERT INTO Reservation (guests_count, check_in_out_datetime, client_id, room_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Reservation (guests_count, check_in_datetime, check_out_datetime, client_id, room_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, r.getGuestsCount());
-            ps.setTimestamp(2, Timestamp.valueOf(r.getCheckInOutDatetime()));
-            ps.setInt(3, r.getClientId());
-            ps.setInt(4, r.getRoomId());
+            ps.setTimestamp(2, Timestamp.valueOf(r.getCheckInDatetime()));
+            ps.setTimestamp(3, r.getCheckOutDatetime() != null ? Timestamp.valueOf(r.getCheckOutDatetime()) : null);
+            ps.setInt(4, r.getClientId());
+            ps.setInt(5, r.getRoomId());
             ps.executeUpdate();
             System.out.println("Бронювання додано!");
         }
@@ -29,9 +30,12 @@ public class ReservationDAO implements GenericDAO<Reservation> {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Reservation(rs.getInt("reservation_id"),
+                Timestamp checkOut = rs.getTimestamp("check_out_datetime");
+                return new Reservation(
+                        rs.getInt("reservation_id"),
                         rs.getInt("guests_count"),
-                        rs.getTimestamp("check_in_out_datetime").toLocalDateTime(),
+                        rs.getTimestamp("check_in_datetime").toLocalDateTime(),
+                        checkOut != null ? checkOut.toLocalDateTime() : null,
                         rs.getInt("client_id"),
                         rs.getInt("room_id"));
             }
@@ -52,9 +56,12 @@ public class ReservationDAO implements GenericDAO<Reservation> {
             }
             System.out.println();
             while (rs.next()) {
-                list.add(new Reservation(rs.getInt("reservation_id"),
+                Timestamp checkOut = rs.getTimestamp("check_out_datetime");
+                list.add(new Reservation(
+                        rs.getInt("reservation_id"),
                         rs.getInt("guests_count"),
-                        rs.getTimestamp("check_in_out_datetime").toLocalDateTime(),
+                        rs.getTimestamp("check_in_datetime").toLocalDateTime(),
+                        checkOut != null ? checkOut.toLocalDateTime() : null,
                         rs.getInt("client_id"),
                         rs.getInt("room_id")));
             }
@@ -64,13 +71,14 @@ public class ReservationDAO implements GenericDAO<Reservation> {
 
     @Override
     public void update(Reservation r) throws Exception {
-        String sql = "UPDATE Reservation SET guests_count = ?, check_in_out_datetime = ?, client_id = ?, room_id = ? WHERE reservation_id = ?";
+        String sql = "UPDATE Reservation SET guests_count = ?, check_in_datetime = ?, check_out_datetime = ?, client_id = ?, room_id = ? WHERE reservation_id = ?";
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql)) {
             ps.setInt(1, r.getGuestsCount());
-            ps.setTimestamp(2, Timestamp.valueOf(r.getCheckInOutDatetime()));
-            ps.setInt(3, r.getClientId());
-            ps.setInt(4, r.getRoomId());
-            ps.setInt(5, r.getReservationId());
+            ps.setTimestamp(2, Timestamp.valueOf(r.getCheckInDatetime()));
+            ps.setTimestamp(3, r.getCheckOutDatetime() != null ? Timestamp.valueOf(r.getCheckOutDatetime()) : null);
+            ps.setInt(4, r.getClientId());
+            ps.setInt(5, r.getRoomId());
+            ps.setInt(6, r.getReservationId());
             ps.executeUpdate();
             System.out.println("Бронювання оновлено!");
         }
@@ -94,9 +102,12 @@ public class ReservationDAO implements GenericDAO<Reservation> {
             ps.setString(1, "%" + keyword + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Reservation(rs.getInt("reservation_id"),
+                Timestamp checkOut = rs.getTimestamp("check_out_datetime");
+                list.add(new Reservation(
+                        rs.getInt("reservation_id"),
                         rs.getInt("guests_count"),
-                        rs.getTimestamp("check_in_out_datetime").toLocalDateTime(),
+                        rs.getTimestamp("check_in_datetime").toLocalDateTime(),
+                        checkOut != null ? checkOut.toLocalDateTime() : null,
                         rs.getInt("client_id"),
                         rs.getInt("room_id")));
             }
