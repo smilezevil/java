@@ -2,6 +2,7 @@ package com.hotel.model;
 
 import java.math.BigDecimal;
 
+
 public class Payment {
     private int paymentId;
     private BigDecimal totalAmount;
