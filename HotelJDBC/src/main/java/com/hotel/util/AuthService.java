@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
 public class AuthService {
 
     public static String hashPassword(String password) throws Exception {
