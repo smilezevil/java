@@ -2,6 +2,7 @@ package com.hotel.model;
 
 import java.math.BigDecimal;
 
+
 public class RoomType {
     private int typeId;
     private String typeName;
