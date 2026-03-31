@@ -1,5 +1,6 @@
 package com.hotel.model;
 
+
 public class RoomRating {
     private int ratingId;
     private float popularityScore;
