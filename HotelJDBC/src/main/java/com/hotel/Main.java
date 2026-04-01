@@ -6,449 +6,272 @@ import com.hotel.util.AuthService;
 import com.hotel.util.DBConnection;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
-    static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("=== Система управління готелем ===");
+    public static void main(String[] args) {
+        System.out.println("Starting the hotel system...\n");
 
-        if (!authMenu()) {
-            System.out.println("Доступ заборонено. Виходимо...");
-            return;
-        }
+        ClientDAO clientDAO = new ClientDAO();
+        RoomTypeDAO roomTypeDAO = new RoomTypeDAO();
+        RoomDAO roomDAO = new RoomDAO();
+        ReservationDAO reservationDAO = new ReservationDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
+        RoomRatingDAO roomRatingDAO = new RoomRatingDAO();
 
-        boolean running = true;
-        while (running) {
-            System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
-            System.out.println("1. Клієнти");
-            System.out.println("2. Типи номерів");
-            System.out.println("3. Номери");
-            System.out.println("4. Бронювання");
-            System.out.println("5. Оплати");
-            System.out.println("6. Рейтинги номерів");
-            System.out.println("0. Вихід");
-            System.out.print("Оберіть: ");
-
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice) {
-                    case 1 -> clientMenu();
-                    case 2 -> roomTypeMenu();
-                    case 3 -> roomMenu();
-                    case 4 -> reservationMenu();
-                    case 5 -> paymentMenu();
-                    case 6 -> roomRatingMenu();
-                    case 0 -> running = false;
-                    default -> System.out.println("Невірний вибір!");
-                }
-            } catch (Exception e) {
-                System.out.println("Помилка: введіть число від 0 до 6!");
-            }
-        }
-
-        DBConnection.closeConnection();
-        System.out.println("До побачення!");
-    }
-
-    // ===== АВТОРИЗАЦІЯ =====
-    static boolean authMenu() throws Exception {
-        while (true) {
-            System.out.println("\n1. Увійти");
-            System.out.println("2. Зареєструватись");
-            System.out.println("0. Вихід");
-            System.out.print("Оберіть: ");
-
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice) {
-                    case 1 -> {
-                        System.out.print("Логін: ");
-                        String username = scanner.nextLine();
-                        System.out.print("Пароль: ");
-                        String password = scanner.nextLine();
-                        if (AuthService.login(username, password)) {
-                            System.out.println("Успішний вхід! Вітаємо, " + username + "!");
-                            return true;
-                        } else {
-                            System.out.println("Невірний логін або пароль!");
-                        }
-                    }
-                    case 2 -> {
-                        System.out.print("Новий логін: ");
-                        String username = scanner.nextLine();
-                        System.out.print("Новий пароль: ");
-                        String password = scanner.nextLine();
-                        AuthService.register(username, password);
-                    }
-                    case 0 -> { return false; }
-                    default -> System.out.println("Невірний вибір!");
-                }
-            } catch (Exception e) {
-                System.out.println("Помилка: введіть число!");
-            }
-        }
-    }
-
-    // ===== ДОПОМІЖНИЙ МЕТОД ДЛЯ ВВЕДЕННЯ ДАТИ =====
-    static LocalDateTime readDate(String prompt) {
-        while (true) {
-            System.out.print(prompt + " (yyyy-MM-ddTHH:mm, наприклад 2026-04-05T14:00): ");
-            try {
-                return LocalDateTime.parse(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Невірний формат дати! Спробуйте ще раз.");
-            }
-        }
-    }
-
-    // ===== КЛІЄНТИ =====
-    static void clientMenu() {
         try {
-            ClientDAO dao = new ClientDAO();
-            System.out.println("\n--- КЛІЄНТИ ---");
-            System.out.println("1. Показати всіх");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    Client c = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(c != null ? c : "Клієнта не знайдено!");
-                }
-                case 3 -> {
-                    System.out.print("ПІБ: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Паспортні дані: ");
-                    String passport = scanner.nextLine();
-                    dao.create(new Client(0, name, passport));
-                }
-                case 4 -> {
-                    System.out.print("ID клієнта: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Нове ПІБ: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Нові паспортні дані: ");
-                    String passport = scanner.nextLine();
-                    dao.update(new Client(id, name, passport));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
+            System.out.println("Total clients: " + clientDAO.readAll().size());
+            System.out.println("Total room types: " + roomTypeDAO.readAll().size());
+            System.out.println("Total rooms: " + roomDAO.readAll().size());
+            System.out.println("Total reservations: " + reservationDAO.readAll().size());
+            System.out.println("Total payments: " + paymentDAO.readAll().size());
+            System.out.println("Total room ratings: " + roomRatingDAO.readAll().size());
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("Searching clients with 'Мельник':");
+            List<Client> clients = clientDAO.search("Мельник");
+            for (Client c : clients) {
+                System.out.println(c);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
-    }
 
-    // ===== ТИПИ НОМЕРІВ =====
-    static void roomTypeMenu() {
-        try {
-            RoomTypeDAO dao = new RoomTypeDAO();
-            System.out.println("\n--- ТИПИ НОМЕРІВ ---");
-            System.out.println("1. Показати всі");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
-
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    RoomType rt = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(rt != null ? rt : "Тип не знайдено!");
-                }
-                case 3 -> {
-                    System.out.print("Назва типу: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Ціна за ніч: ");
-                    BigDecimal price = new BigDecimal(scanner.nextLine());
-                    dao.create(new RoomType(0, name, price));
-                }
-                case 4 -> {
-                    System.out.print("ID типу: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Нова назва: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Нова ціна: ");
-                    BigDecimal price = new BigDecimal(scanner.nextLine());
-                    dao.update(new RoomType(id, name, price));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
+            System.out.println("\nSearching room types with 'Стандарт':");
+            List<RoomType> roomTypes = roomTypeDAO.search("Стандарт");
+            for (RoomType rt : roomTypes) {
+                System.out.println(rt);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число або суму!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
-    }
 
-    // ===== НОМЕРИ =====
-    static void roomMenu() {
-        try {
-            RoomDAO dao = new RoomDAO();
-            System.out.println("\n--- НОМЕРИ ---");
-            System.out.println("1. Показати всі");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
-
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    Room r = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(r != null ? r : "Номер не знайдено!");
-                }
-                case 3 -> {
-                    System.out.print("Номер кімнати: ");
-                    String number = scanner.nextLine();
-                    System.out.print("Місткість: ");
-                    int capacity = Integer.parseInt(scanner.nextLine());
-                    System.out.print("ID типу: ");
-                    int typeId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Колонка: ");
-                    String col = scanner.nextLine();
-                    dao.create(new Room(0, number, capacity, typeId, col));
-                }
-                case 4 -> {
-                    System.out.print("ID номера: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Новий номер: ");
-                    String number = scanner.nextLine();
-                    System.out.print("Нова місткість: ");
-                    int capacity = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Новий ID типу: ");
-                    int typeId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Нова колонка: ");
-                    String col = scanner.nextLine();
-                    dao.update(new Room(id, number, capacity, typeId, col));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
+            System.out.println("\nSearching rooms with number '101':");
+            List<Room> rooms = roomDAO.search("101");
+            for (Room r : rooms) {
+                System.out.println(r);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
-    }
 
-    // ===== БРОНЮВАННЯ =====
-    static void reservationMenu() {
-        try {
-            ReservationDAO dao = new ReservationDAO();
-            System.out.println("\n--- БРОНЮВАННЯ ---");
-            System.out.println("1. Показати всі");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
-
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    Reservation res = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(res != null ? res : "Бронювання не знайдено!");
-                }
-                case 3 -> {
-                    System.out.print("Кількість гостей: ");
-                    int guests = Integer.parseInt(scanner.nextLine());
-                    LocalDateTime checkIn = readDate("Дата заїзду");
-                    LocalDateTime checkOut = readDate("Дата виїзду");
-                    System.out.print("ID клієнта: ");
-                    int clientId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("ID номера: ");
-                    int roomId = Integer.parseInt(scanner.nextLine());
-                    dao.create(new Reservation(0, guests, checkIn, checkOut, clientId, roomId));
-                }
-                case 4 -> {
-                    System.out.print("ID бронювання: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Нова кількість гостей: ");
-                    int guests = Integer.parseInt(scanner.nextLine());
-                    LocalDateTime checkIn = readDate("Нова дата заїзду");
-                    LocalDateTime checkOut = readDate("Нова дата виїзду");
-                    System.out.print("Новий ID клієнта: ");
-                    int clientId = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Новий ID номера: ");
-                    int roomId = Integer.parseInt(scanner.nextLine());
-                    dao.update(new Reservation(id, guests, checkIn, checkOut, clientId, roomId));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
+            System.out.println("\nSearching payments with '1000':");
+            List<Payment> payments = paymentDAO.search("1000");
+            for (Payment p : payments) {
+                System.out.println(p);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
-    }
 
-    // ===== ОПЛАТИ =====
-    static void paymentMenu() {
-        try {
-            PaymentDAO dao = new PaymentDAO();
-            System.out.println("\n--- ОПЛАТИ ---");
-            System.out.println("1. Показати всі");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
-
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    Payment p = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(p != null ? p : "Оплату не знайдено!");
-                }
-                case 3 -> {
-                    System.out.print("Сума: ");
-                    BigDecimal amount = new BigDecimal(scanner.nextLine());
-                    System.out.print("ID бронювання: ");
-                    int resId = Integer.parseInt(scanner.nextLine());
-                    dao.create(new Payment(0, amount, resId));
-                }
-                case 4 -> {
-                    System.out.print("ID оплати: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Нова сума: ");
-                    BigDecimal amount = new BigDecimal(scanner.nextLine());
-                    System.out.print("Новий ID бронювання: ");
-                    int resId = Integer.parseInt(scanner.nextLine());
-                    dao.update(new Payment(id, amount, resId));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
+            System.out.println("\nSearching room with popularity score '4.5':");
+            List<RoomRating> ratings = roomRatingDAO.search("4.5");
+            for (RoomRating rr : ratings) {
+                System.out.println(rr);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число або суму!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
-    }
 
-    // ===== РЕЙТИНГИ =====
-    static void roomRatingMenu() {
-        try {
-            RoomRatingDAO dao = new RoomRatingDAO();
-            System.out.println("\n--- РЕЙТИНГИ НОМЕРІВ ---");
-            System.out.println("1. Показати всі");
-            System.out.println("2. Знайти за ID");
-            System.out.println("3. Додати");
-            System.out.println("4. Оновити");
-            System.out.println("5. Видалити");
-            System.out.println("6. Пошук");
-            System.out.print("Оберіть: ");
+            System.out.println("\n-----------------------------------\n");
 
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> dao.readAll().forEach(System.out::println);
-                case 2 -> {
-                    System.out.print("ID: ");
-                    RoomRating rr = dao.read(Integer.parseInt(scanner.nextLine()));
-                    System.out.println(rr != null ? rr : "Рейтинг не знайдено!");
+
+            boolean login = AuthService.login("admin", "admin123");
+            System.out.println("Login: " + (login ? "SUCCESS" : "FAILED"));
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (Client)");
+
+            Client newClient = new Client(0, "Бенедикт Камбербетч", "AA123456");
+            clientDAO.create(newClient);
+
+            Client foundClient = null;
+            for (Client c : clientDAO.readAll()) {
+                if ("Бенедикт Камбербетч".equals(c.getFullName())) {
+                    foundClient = c;
+                    break;
                 }
-                case 3 -> {
-                    System.out.print("Рейтинг (0.0 - 10.0): ");
-                    float score = Float.parseFloat(scanner.nextLine());
-                    if (score < 0 || score > 10) {
-                        System.out.println("Рейтинг має бути від 0.0 до 10.0!");
-                        return;
-                    }
-                    System.out.print("ID номера: ");
-                    int roomId = Integer.parseInt(scanner.nextLine());
-                    dao.create(new RoomRating(0, score, roomId));
-                }
-                case 4 -> {
-                    System.out.print("ID рейтингу: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-                    System.out.print("Новий рейтинг (0.0 - 10.0): ");
-                    float score = Float.parseFloat(scanner.nextLine());
-                    if (score < 0 || score > 10) {
-                        System.out.println("Рейтинг має бути від 0.0 до 10.0!");
-                        return;
-                    }
-                    System.out.print("Новий ID номера: ");
-                    int roomId = Integer.parseInt(scanner.nextLine());
-                    dao.update(new RoomRating(id, score, roomId));
-                }
-                case 5 -> {
-                    System.out.print("ID для видалення: ");
-                    dao.delete(Integer.parseInt(scanner.nextLine()));
-                }
-                case 6 -> {
-                    System.out.print("Пошуковий запит: ");
-                    dao.search(scanner.nextLine()).forEach(System.out::println);
-                }
-                default -> System.out.println("Невірний вибір!");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: введіть коректне число!");
+
+            if (foundClient != null) {
+                System.out.println("Created: " + foundClient);
+
+                foundClient.setFullName("Бенедикт Камбербетч");
+                foundClient.setPassportData("BB654321");
+                clientDAO.update(foundClient);
+
+                System.out.println("Updated: " + clientDAO.read(foundClient.getClientId()));
+
+                clientDAO.delete(foundClient.getClientId());
+                System.out.println("Client Бенедикт Камбербетч was deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (RoomType)");
+
+            RoomType newRoomType = new RoomType(0, "Мегасуперультралюкс", new BigDecimal("1500.00"));
+            roomTypeDAO.create(newRoomType);
+
+            RoomType foundRoomType = null;
+            for (RoomType rt : roomTypeDAO.readAll()) {
+                if ("Мегасуперультралюкс".equals(rt.getTypeName())) {
+                    foundRoomType = rt;
+                    break;
+                }
+            }
+
+            if (foundRoomType != null) {
+                System.out.println("Created: " + foundRoomType);
+
+                foundRoomType.setTypeName("Мегасуперультралюкс");
+                foundRoomType.setPricePerNight(new BigDecimal("180000.00"));
+                roomTypeDAO.update(foundRoomType);
+
+                System.out.println("Updated: " + roomTypeDAO.read(foundRoomType.getTypeId()));
+
+                roomTypeDAO.delete(foundRoomType.getTypeId());
+                System.out.println("Room type Мегасуперультралюкс was deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (Room)");
+
+            Room newRoom = new Room(0, "666", 2, 1, "рожевий");
+            roomDAO.create(newRoom);
+
+            Room foundRoom = null;
+            for (Room r : roomDAO.readAll()) {
+                if ("666".equals(r.getRoomNumber())) {
+                    foundRoom = r;
+                    break;
+                }
+            }
+
+            if (foundRoom != null) {
+                System.out.println("Created: " + foundRoom);
+
+                foundRoom.setCapacity(3);
+                foundRoom.setRoomCol("галубой");
+                roomDAO.update(foundRoom);
+
+                System.out.println("Updated: " + roomDAO.read(foundRoom.getRoomId()));
+
+                roomDAO.delete(foundRoom.getRoomId());
+                System.out.println("Room with number 666 was deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (Reservation)");
+
+            Reservation newReservation = new Reservation(
+                    0,
+                    2,
+                    LocalDateTime.now().plusDays(1),
+                    LocalDateTime.now().plusDays(3),
+                    1,
+                    1
+            );
+            reservationDAO.create(newReservation);
+
+            Reservation foundReservation = null;
+            for (Reservation r : reservationDAO.readAll()) {
+                if (r.getClientId() == 1 && r.getRoomId() == 1 && r.getGuestsCount() == 2) {
+                    foundReservation = r;
+                    break;
+                }
+            }
+
+            if (foundReservation != null) {
+                System.out.println("Created: " + foundReservation);
+
+                foundReservation.setGuestsCount(4);
+                reservationDAO.update(foundReservation);
+
+                System.out.println("Updated: " + reservationDAO.read(foundReservation.getReservationId()));
+
+                reservationDAO.delete(foundReservation.getReservationId());
+                System.out.println("Reservation deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (Payment)");
+
+            Payment newPayment = new Payment(0, new BigDecimal("2500.00"), 1);
+            paymentDAO.create(newPayment);
+
+            Payment foundPayment = null;
+            for (Payment p : paymentDAO.readAll()) {
+                if (p.getTotalAmount().compareTo(new BigDecimal("2500.00")) == 0 && p.getReservationId() == 1) {
+                    foundPayment = p;
+                    break;
+                }
+            }
+
+            if (foundPayment != null) {
+                System.out.println("Created: " + foundPayment);
+
+                foundPayment.setTotalAmount(new BigDecimal("3000.00"));
+                paymentDAO.update(foundPayment);
+
+                System.out.println("Updated: " + paymentDAO.read(foundPayment.getPaymentId()));
+
+                paymentDAO.delete(foundPayment.getPaymentId());
+                System.out.println("Payment deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("CRUD test (RoomRating)");
+
+            RoomRating newRating = new RoomRating(0, 4.5f, 1);
+            roomRatingDAO.create(newRating);
+
+            RoomRating foundRating = null;
+            for (RoomRating rr : roomRatingDAO.readAll()) {
+                if (rr.getRoomId() == 1 && rr.getPopularityScore() == 4.5f) {
+                    foundRating = rr;
+                    break;
+                }
+            }
+
+            if (foundRating != null) {
+                System.out.println("Created: " + foundRating);
+
+                foundRating.setPopularityScore(4.2f);
+                roomRatingDAO.update(foundRating);
+
+                System.out.println("Updated: " + roomRatingDAO.read(foundRating.getRatingId()));
+
+                roomRatingDAO.delete(foundRating.getRatingId());
+                System.out.println("Room rating deleted");
+            }
+
+            System.out.println("\n-----------------------------------\n");
+
+
+            System.out.println("Metadata (Room):");
+
+            Connection connection = DBConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM Room");
+            ResultSet rs = ps.executeQuery();
+
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnCount = meta.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println(meta.getColumnName(i) + " - " + meta.getColumnTypeName(i));
+            }
+
         } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+            System.out.println("\nSystem finished.");
         }
     }
 }
