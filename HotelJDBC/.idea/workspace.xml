@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d97d8b97-bbfd-4137-8384-237a80ebc1f7" name="Changes" comment="Add ReservationDAO with CRUD operations and search support">
+    <list default="true" id="d97d8b97-bbfd-4137-8384-237a80ebc1f7" name="Changes" comment="Add Room model with fields, getters, setters and toString">
       <change afterPath="$PROJECT_DIR$/../.idea/IntelliLang.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/hotel/App.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../lab3/src/lab3/task1.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../lab3/src/lab3/task2.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../lab3/src/lab3/task3.java" afterDir="false" />
@@ -22,19 +20,8 @@
       <change beforePath="$PROJECT_DIR$/../.idea/java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/java.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/dao/GenericDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/dao/GenericDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomRatingDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomRatingDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomTypeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/dao/RoomTypeDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/Reservation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/Reservation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/Room.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/RoomRating.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/RoomRating.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/model/RoomType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/model/RoomType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/util/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/util/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/util/DBConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hotel/util/DBConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hotel/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/hotel/AppTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +91,11 @@
       <workItem from="1774981867807" duration="750000" />
       <workItem from="1774982694806" duration="17000" />
       <workItem from="1774982777281" duration="2189000" />
-      <workItem from="1774984999727" duration="3364000" />
+      <workItem from="1774984999727" duration="3858000" />
+      <workItem from="1775026566238" duration="217000" />
+      <workItem from="1775068005089" duration="9841000" />
+      <workItem from="1775118899690" duration="1320000" />
+      <workItem from="1775555362316" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="Add ClientDAO with CRUD operations and search support">
       <option name="closed" value="true" />
@@ -130,7 +121,159 @@
       <option name="project" value="LOCAL" />
       <updated>1774988369879</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add RoomDAO with CRUD operations and room search">
+      <option name="closed" value="true" />
+      <created>1774988381237</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988381237</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add RoomRatingDAO with CRUD operations and rating search">
+      <option name="closed" value="true" />
+      <created>1774988393028</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988393028</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add RoomTypeDAO with CRUD operations and type search">
+      <option name="closed" value="true" />
+      <created>1774988405663</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988405663</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Create GenericDAO interface for common CRUD methods">
+      <option name="closed" value="true" />
+      <created>1774988426807</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988426807</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add Client model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988442127</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988442127</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Add Payment model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988455133</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988455133</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add Reservation model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988484463</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988484463</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Add Room model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988495387</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988495387</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add RoomRating model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988505380</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988505380</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add RoomType model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1774988518354</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988518354</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add DBConnection utility using properties file configuration">
+      <option name="closed" value="true" />
+      <created>1774988530138</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988530138</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add AuthService with password hashing, login and registration">
+      <option name="closed" value="true" />
+      <created>1774988540493</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988540493</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Add application entry point">
+      <option name="closed" value="true" />
+      <created>1774988560534</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988560534</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Add database connection properties configuration">
+      <option name="closed" value="true" />
+      <created>1774988582851</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988582851</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Configure Maven project and add MySQL JDBC dependency">
+      <option name="closed" value="true" />
+      <created>1774988621854</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988621854</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added a Main with a scanner so that it would be fashionable to manually enter data">
+      <option name="closed" value="true" />
+      <created>1774988700833</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988700833</updated>
+    </task>
+    <task id="LOCAL-00020" summary="add lab5">
+      <option name="closed" value="true" />
+      <created>1774988725038</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1774988725038</updated>
+    </task>
+    <task id="LOCAL-00021" summary="add main for lab5">
+      <option name="closed" value="true" />
+      <created>1775077683367</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1775077683367</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Add Room model with fields, getters, setters and toString">
+      <option name="closed" value="true" />
+      <created>1775077716407</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1775077716407</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +283,24 @@
     <MESSAGE value="Add ClientDAO with CRUD operations and search support" />
     <MESSAGE value="Add PaymentDAO with CRUD operations and amount search" />
     <MESSAGE value="Add ReservationDAO with CRUD operations and search support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add ReservationDAO with CRUD operations and search support" />
+    <MESSAGE value="Add RoomDAO with CRUD operations and room search" />
+    <MESSAGE value="Add RoomRatingDAO with CRUD operations and rating search" />
+    <MESSAGE value="Add RoomTypeDAO with CRUD operations and type search" />
+    <MESSAGE value="Create GenericDAO interface for common CRUD methods" />
+    <MESSAGE value="Add Client model with fields, getters, setters and toString" />
+    <MESSAGE value="Add Payment model with fields, getters, setters and toString" />
+    <MESSAGE value="Add Reservation model with fields, getters, setters and toString" />
+    <MESSAGE value="Add RoomRating model with fields, getters, setters and toString" />
+    <MESSAGE value="Add RoomType model with fields, getters, setters and toString" />
+    <MESSAGE value="Add DBConnection utility using properties file configuration" />
+    <MESSAGE value="Add AuthService with password hashing, login and registration" />
+    <MESSAGE value="Add application entry point" />
+    <MESSAGE value="Add database connection properties configuration" />
+    <MESSAGE value="Configure Maven project and add MySQL JDBC dependency" />
+    <MESSAGE value="Added a Main with a scanner so that it would be fashionable to manually enter data" />
+    <MESSAGE value="add lab5" />
+    <MESSAGE value="add main for lab5" />
+    <MESSAGE value="Add Room model with fields, getters, setters and toString" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Room model with fields, getters, setters and toString" />
   </component>
 </project>
