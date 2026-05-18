@@ -1,7 +1,10 @@
 package com.hotel.controller;
 
+import com.hotel.dto.BookingDto;
+import com.hotel.mapper.BookingMapper;
 import com.hotel.model.Booking;
 import com.hotel.service.BookingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,42 +15,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
+    private final BookingMapper bookingMapper;
 
     @GetMapping
-    public List<Booking> getAllBookings() {
-        return bookingService.getAllBookings();
+    public List<BookingDto> getAllBookings() {
+        return bookingService.getAllBookings().stream()
+                .map(bookingMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable Long id) {
+    public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) {
         return bookingService.getBookingById(id)
+                .map(bookingMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.createBooking(booking);
+    public BookingDto createBooking(@Valid @RequestBody BookingDto bookingDto) {
+        Booking booking = bookingMapper.toEntity(bookingDto);
+        return bookingMapper.toDto(bookingService.createBooking(booking));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking booking) {
+    public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id, @Valid @RequestBody BookingDto bookingDto) {
+        Booking booking = bookingMapper.toEntity(bookingDto);
         return bookingService.updateBooking(id, booking)
+                .map(bookingMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Booking> patchBooking(@PathVariable Long id, @RequestBody Booking booking) {
+    public ResponseEntity<BookingDto> patchBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
+        Booking booking = bookingMapper.toEntity(bookingDto);
         return bookingService.patchBooking(id, booking)
+                .map(bookingMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllBookings() {
-        bookingService.deleteAllBookings();
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -56,5 +62,11 @@ public class BookingController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllBookings() {
+        bookingService.deleteAllBookings();
+        return ResponseEntity.ok().build();
     }
 }

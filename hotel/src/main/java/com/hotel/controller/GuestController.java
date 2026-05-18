@@ -1,53 +1,59 @@
 package com.hotel.controller;
 
+import com.hotel.dto.GuestDto;
 import com.hotel.model.Guest;
 import com.hotel.service.GuestService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.hotel.mapper.GuestMapper;
 
 @RestController
 @RequestMapping("/guests")
 @RequiredArgsConstructor
 public class GuestController {
     private final GuestService guestService;
+    private final GuestMapper guestMapper;
 
     @GetMapping
-    public List<Guest> getAllGuests() {
-        return guestService.getAllGuests();
+    public List<GuestDto> getAllGuests() {
+        return guestService.getAllGuests().stream()
+                .map(guestMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Guest> getGuestById(@PathVariable Long id) {
+    public ResponseEntity<GuestDto> getGuestById(@PathVariable Long id) {
         return guestService.getGuestById(id)
+                .map(guestMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Guest createGuest(@RequestBody Guest guest) {
-        return guestService.createGuest(guest);
+    public GuestDto createGuest(@Valid @RequestBody GuestDto guestDto) {
+        Guest guest = guestMapper.toEntity(guestDto);
+        return guestMapper.toDto(guestService.createGuest(guest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Guest> updateGuest(@PathVariable Long id, @RequestBody Guest guest) {
+    public ResponseEntity<GuestDto> updateGuest(@PathVariable Long id, @Valid @RequestBody GuestDto guestDto) {
+        Guest guest = guestMapper.toEntity(guestDto);
         return guestService.updateGuest(id, guest)
+                .map(guestMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Guest> patchGuest(@PathVariable Long id, @RequestBody Guest guest) {
+    public ResponseEntity<GuestDto> patchGuest(@PathVariable Long id, @RequestBody GuestDto guestDto) {
+        Guest guest = guestMapper.toEntity(guestDto);
         return guestService.patchGuest(id, guest)
+                .map(guestMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllGuests() {
-        guestService.deleteAllGuests();
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -56,5 +62,11 @@ public class GuestController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllGuests() {
+        guestService.deleteAllGuests();
+        return ResponseEntity.ok().build();
     }
 }

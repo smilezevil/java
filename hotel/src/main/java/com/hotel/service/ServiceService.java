@@ -34,20 +34,20 @@ public class ServiceService {
     public Optional<Service> patchService(Long id, Service patchedService) {
         return serviceRepository.findById(id).map(service -> {
             if (patchedService.getName() != null) service.setName(patchedService.getName());
-            if (patchedService.getPrice() != 0) service.setPrice(patchedService.getPrice());
+            if (patchedService.getPrice() != null) service.setPrice(patchedService.getPrice());
             return serviceRepository.save(service);
         });
     }
 
-    public void deleteAllServices() {
-        serviceRepository.deleteAll();
-    }
-
     public boolean deleteService(Long id) {
-        if (serviceRepository.findById(id).isPresent()) {
+        if (serviceRepository.existsById(id)) {
             serviceRepository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    public void deleteAllServices() {
+        serviceRepository.deleteAll();
     }
 }

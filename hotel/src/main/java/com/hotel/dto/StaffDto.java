@@ -1,6 +1,5 @@
-package com.hotel.model;
+package com.hotel.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -11,20 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "staff")
-public class Staff {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class StaffDto {
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "The name cannot be empty")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "The position cannot be empty")
     private String position;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "The salary cannot be null")
+    @Positive(message = "The salary must be positive")
     private Double salary;
 }

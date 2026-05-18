@@ -1,7 +1,10 @@
 package com.hotel.controller;
 
+import com.hotel.dto.ServiceDto;
+import com.hotel.mapper.ServiceMapper;
 import com.hotel.model.Service;
 import com.hotel.service.ServiceService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,42 +15,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServiceController {
     private final ServiceService serviceService;
+    private final ServiceMapper serviceMapper;
 
     @GetMapping
-    public List<Service> getAllServices() {
-        return serviceService.getAllServices();
+    public List<ServiceDto> getAllServices() {
+        return serviceService.getAllServices().stream()
+                .map(serviceMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Service> getServiceById(@PathVariable Long id) {
+    public ResponseEntity<ServiceDto> getServiceById(@PathVariable Long id) {
         return serviceService.getServiceById(id)
+                .map(serviceMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Service createService(@RequestBody Service service) {
-        return serviceService.createService(service);
+    public ServiceDto createService(@Valid @RequestBody ServiceDto serviceDto) {
+        Service service = serviceMapper.toEntity(serviceDto);
+        return serviceMapper.toDto(serviceService.createService(service));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Service> updateService(@PathVariable Long id, @RequestBody Service service) {
+    public ResponseEntity<ServiceDto> updateService(@PathVariable Long id, @Valid @RequestBody ServiceDto serviceDto) {
+        Service service = serviceMapper.toEntity(serviceDto);
         return serviceService.updateService(id, service)
+                .map(serviceMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Service> patchService(@PathVariable Long id, @RequestBody Service service) {
+    public ResponseEntity<ServiceDto> patchService(@PathVariable Long id, @RequestBody ServiceDto serviceDto) {
+        Service service = serviceMapper.toEntity(serviceDto);
         return serviceService.patchService(id, service)
+                .map(serviceMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllServices() {
-        serviceService.deleteAllServices();
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -56,5 +62,11 @@ public class ServiceController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllServices() {
+        serviceService.deleteAllServices();
+        return ResponseEntity.ok().build();
     }
 }

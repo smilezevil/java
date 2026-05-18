@@ -42,15 +42,15 @@ public class GuestService {
         });
     }
 
-    public void deleteAllGuests() {
-        guestRepository.deleteAll();
-    }
-
     public boolean deleteGuest(Long id) {
-        if (guestRepository.findById(id).isPresent()) {
+        if (guestRepository.existsById(id)) {
             guestRepository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    public void deleteAllGuests() {
+        guestRepository.deleteAll();
     }
 }

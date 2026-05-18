@@ -37,20 +37,20 @@ public class StaffService {
         return staffRepository.findById(id).map(staff -> {
             if (patchedStaff.getName() != null) staff.setName(patchedStaff.getName());
             if (patchedStaff.getPosition() != null) staff.setPosition(patchedStaff.getPosition());
-            if (patchedStaff.getSalary() != 0) staff.setSalary(patchedStaff.getSalary());
+            if (patchedStaff.getSalary() != null) staff.setSalary(patchedStaff.getSalary());
             return staffRepository.save(staff);
         });
     }
 
-    public void deleteAllStaff() {
-        staffRepository.deleteAll();
-    }
-
     public boolean deleteStaff(Long id) {
-        if (staffRepository.findById(id).isPresent()) {
+        if (staffRepository.existsById(id)) {
             staffRepository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    public void deleteAllStaff() {
+        staffRepository.deleteAll();
     }
 }

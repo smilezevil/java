@@ -1,6 +1,5 @@
-package com.hotel.model;
+package com.hotel.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,20 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "guest")
-public class Guest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class GuestDto {
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "The name cannot be empty")
     private String name;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "The email cannot be empty")
+    @Email(message = "The email must be valid")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "The phone cannot be empty")
     private String phone;
 }

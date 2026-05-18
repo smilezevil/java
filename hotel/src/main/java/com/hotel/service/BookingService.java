@@ -44,15 +44,15 @@ public class BookingService {
         });
     }
 
-    public void deleteAllBookings() {
-        bookingRepository.deleteAll();
-    }
-
     public boolean deleteBooking(Long id) {
-        if (bookingRepository.findById(id).isPresent()) {
+        if (bookingRepository.existsById(id)) {
             bookingRepository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    public void deleteAllBookings() {
+        bookingRepository.deleteAll();
     }
 }

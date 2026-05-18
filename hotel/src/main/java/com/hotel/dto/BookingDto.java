@@ -1,6 +1,5 @@
-package com.hotel.model;
+package com.hotel.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,22 +9,18 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "booking")
-public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookingDto {
     private Long id;
 
-    @NotNull
+    @NotNull(message = "The guest ID cannot be null")
     private Long guestId;
 
-    @NotNull
+    @NotNull(message = "The room ID cannot be null")
     private Long roomId;
 
-    @NotNull
+    @NotNull(message = "The check-in date cannot be null")
     private LocalDate checkIn;
 
-    @NotNull
+    @NotNull(message = "The check-out date cannot be null")
     private LocalDate checkOut;
 }

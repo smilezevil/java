@@ -6,11 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import com.hotel.repository.RoomJdbcRepository;
 
 @Service
 @RequiredArgsConstructor
 public class RoomService {
     private final RoomRepository roomRepository;
+
+    private final RoomJdbcRepository roomJdbcRepository;
 
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
@@ -44,15 +47,19 @@ public class RoomService {
         });
     }
 
-    public void deleteAllRooms() {
-        roomRepository.deleteAll();
-    }
-
     public boolean deleteRoom(Long id) {
-        if (roomRepository.findById(id).isPresent()) {
+        if (roomRepository.existsById(id)) {
             roomRepository.deleteById(id);
             return true;
         }
         return false;
+    }
+
+    public void deleteAllRooms() {
+        roomRepository.deleteAll();
+    }
+
+    public List<Room> getAvailableRooms() {
+        return roomJdbcRepository.findAllAvailableRooms();
     }
 }

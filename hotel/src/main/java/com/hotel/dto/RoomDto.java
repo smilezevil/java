@@ -1,6 +1,5 @@
-package com.hotel.model;
+package com.hotel.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -11,23 +10,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "room")
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RoomDto {
     private Long id;
 
-    @NotNull
+    @NotNull(message = "The room number cannot be null")
     private Integer number;
 
-    @NotBlank
+    @NotBlank(message = "The room type cannot be empty")
     private String type;
 
-    @NotNull
-    @Positive
+    @NotNull(message = "The price cannot be null")
+    @Positive(message = "The price must be positive")
     private Double price;
 
-    @NotNull
+    @NotNull(message = "The available status cannot be null")
     private Boolean available;
 }
