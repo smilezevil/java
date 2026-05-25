@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import com.hotel.repository.RoomJdbcRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +17,8 @@ public class RoomService {
 
     private final RoomJdbcRepository roomJdbcRepository;
 
-    public List<Room> getAllRooms() {
-        return roomRepository.findAll();
+    public Page<Room> getAllRooms(Pageable pageable) {
+        return roomRepository.findAll(pageable);
     }
 
     public Optional<Room> getRoomById(Long id) {

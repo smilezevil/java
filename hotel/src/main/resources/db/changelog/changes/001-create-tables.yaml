@@ -137,3 +137,59 @@ databaseChangeLog:
                   type: DATE
                   constraints:
                     nullable: false
+        - createTable:
+            tableName: invoice
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: total_amount
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_paid
+                  type: BOOLEAN
+              - column:
+                  name: booking_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+              - addForeignKeyConstraint:
+                  baseTableName: invoice
+                  baseColumnNames: booking_id
+                  referencedTableName: booking
+                  referencedColumnNames: id
+                  constraintName: fk_invoice_booking
+
+        - createTable:
+            tableName: booking_service
+            columns:
+              - column:
+                  name: booking_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - addForeignKeyConstraint:
+                  baseTableName: booking_service
+                  baseColumnNames: booking_id
+                  referencedTableName: booking
+                  referencedColumnNames: id
+                  constraintName: fk_bs_booking
+              - addForeignKeyConstraint:
+                  baseTableName: booking_service
+                  baseColumnNames: service_id
+                  referencedTableName: service
+                  referencedColumnNames: id
+                  constraintName: fk_bs_service

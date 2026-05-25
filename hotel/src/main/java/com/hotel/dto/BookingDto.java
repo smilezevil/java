@@ -15,8 +15,12 @@ public class BookingDto {
     @NotNull(message = "The guest ID cannot be null")
     private Long guestId;
 
+    private String guestName;
+
     @NotNull(message = "The room ID cannot be null")
     private Long roomId;
+
+    private Integer roomNumber;
 
     @NotNull(message = "The check-in date cannot be null")
     private LocalDate checkIn;

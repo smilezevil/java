@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-data
+      author: hotel
+      changes:
+        - sql:
+            sql: |
+              -- Додаємо 12 кімнат різних типів
+              INSERT INTO room (number, type, price, available) VALUES 
+              (101, 'Standard', 1500.0, true), (102, 'Standard', 1500.0, true),
+              (103, 'Standard', 1500.0, false), (104, 'Standard', 1500.0, true),
+              (201, 'Deluxe', 2500.0, true), (202, 'Deluxe', 2500.0, true),
+              (203, 'Deluxe', 2500.0, false), (204, 'Deluxe', 2500.0, true),
+              (301, 'Suite', 4500.0, true), (302, 'Suite', 4500.0, true),
+              (401, 'Presidential', 10000.0, true), (402, 'Presidential', 10000.0, true);
+
+              -- Додаємо 6 гостей
+              INSERT INTO guest (name, email, phone) VALUES 
+              ('Катерина Дорофтей', 'kate@gmail.com', '0990128525'),
+              ('Анастасія Демʼянчук', 'nastya@gmail.com', '0981112233'),
+              ('Іван Мельник', 'vanya@gmail.com', '0501234567'),
+              ('Михайло Бугера', 'misha@gmail.com', '0671234567'),
+              ('Максим Кирилюк', 'maks@gmail.com', '0931234567'),
+              ('Тетяна Лаптюк', 'tanya@gmail.com', '0669876543');
+
+              -- Додаємо 6 бронювань
+              INSERT INTO booking (guest_id, room_id, check_in, check_out) VALUES 
+              (1, 1, '2026-06-01', '2026-06-05'),
+              (2, 5, '2026-06-10', '2026-06-15'),
+              (3, 9, '2026-06-20', '2026-06-25'),
+              (4, 2, '2026-07-01', '2026-07-10'),
+              (5, 6, '2026-07-15', '2026-07-20'),
+              (6, 11, '2026-08-01', '2026-08-03');
