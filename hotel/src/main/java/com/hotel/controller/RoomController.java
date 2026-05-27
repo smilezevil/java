@@ -112,7 +112,7 @@ public class RoomController {
     }
 
     @GetMapping("/available")
-    @Operation(summary = "Отримати доступні кімнати", description = "Повертає список лише тих кімнат, які доступні для заселення (використовує JdbcTemplate).")
+    @Operation(summary = "Отримати доступні кімнати", description = "Повертає список лише тих кімнат, які доступні для заселення.")
     @ApiResponse(responseCode = "200", description = "Список доступних кімнат успішно отримано")
     public List<RoomDto> getAvailableRooms() {
         return roomService.getAvailableRooms().stream()

@@ -25,7 +25,7 @@ public class BookingController {
     private final BookingMapper bookingMapper;
 
     @GetMapping
-    @Operation(summary = "Отримати всі бронювання", description = "Повертає список усіх бронювань (використовує оптимізований метод JOIN FETCH для уникнення проблеми N+1)")
+    @Operation(summary = "Отримати всі бронювання", description = "Повертає список усіх бронювань")
     @ApiResponse(responseCode = "200", description = "Список замовлень успішно сформовано")
     public List<BookingDto> getAllBookings() {
         return bookingService.getAllBookings().stream()
@@ -73,7 +73,7 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}")
-    @Operation(summary = "Частково змінити параметри бронювання", description = "Дозволяє змінити лише окремі аспекти замовлення, наприклад, продовжити дату виїзду (check-out).")
+    @Operation(summary = "Частково змінити параметри бронювання", description = "Дозволяє змінити лише окремі аспекти замовлення, наприклад, продовжити дату виїзду.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Зміни в замовлення успішно внесені"),
             @ApiResponse(responseCode = "404", description = "Замовлення не знайдено", content = @Content)

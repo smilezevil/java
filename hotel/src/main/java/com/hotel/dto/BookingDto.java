@@ -20,21 +20,21 @@ public class BookingDto {
     @NotNull(message = "The guest ID cannot be null")
     private Long guestId;
 
-    @Schema(description = "Ім'я гостя (підтягується автоматично з бази)", example = "Катерина Дорофтей")
+    @Schema(description = "Ім'я гостя", example = "Катерина Дорофтей")
     private String guestName;
 
     @Schema(description = "Ідентифікатор заброньованої кімнати", example = "1")
     @NotNull(message = "The room ID cannot be null")
     private Long roomId;
 
-    @Schema(description = "Номер кімнати (підтягується автоматично з бази)", example = "101")
+    @Schema(description = "Номер кімнати", example = "101")
     private Integer roomNumber;
 
-    @Schema(description = "Дата заселення (check-in)", example = "2026-06-01")
+    @Schema(description = "Дата заселення", example = "2026-06-01")
     @NotNull(message = "The check-in date cannot be null")
     private LocalDate checkIn;
 
-    @Schema(description = "Дата виселення (check-out)", example = "2026-06-05")
+    @Schema(description = "Дата виселення", example = "2026-06-05")
     @NotNull(message = "The check-out date cannot be null")
     private LocalDate checkOut;
 }
