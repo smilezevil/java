@@ -17,7 +17,7 @@ databaseChangeLog:
               -- Додаємо 6 гостей
               INSERT INTO guest (name, email, phone) VALUES 
               ('Катерина Дорофтей', 'kate@gmail.com', '0990128525'),
-              ('Анастасія Демʼянчук', 'nastya@gmail.com', '0981112233'),
+              ('Анастасія Демʼянчук', 'demyanchuknastya2018@gmail.com', '0989853936'),
               ('Іван Мельник', 'vanya@gmail.com', '0501234567'),
               ('Михайло Бугера', 'misha@gmail.com', '0671234567'),
               ('Максим Кирилюк', 'maks@gmail.com', '0931234567'),
