@@ -18,25 +18,21 @@ public class BookingService {
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<Booking> getAllBookings() {
-       return bookingRepository.findAllWithGuestsAndRooms();
+        return bookingRepository.findAllWithGuestsAndRooms();
     }
-
-    //@Transactional(readOnly = true)
-    //public List<Booking> getAllBookings() {
-       // return bookingRepository.findAll();
-    //}
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Optional<Booking> getBookingById(Long id) {
-        return bookingRepository.findById(id);
+        return bookingRepository.findByIdWithGuestsAndRooms(id);
     }
 
     public Booking createBooking(Booking booking) {
-        return bookingRepository.save(booking);
+        Booking savedBooking = bookingRepository.save(booking);
+        return bookingRepository.findByIdWithGuestsAndRooms(savedBooking.getId()).orElse(savedBooking);
     }
 
     public Optional<Booking> updateBooking(Long id, Booking updatedBooking) {
-        return bookingRepository.findById(id).map(booking -> {
+        return bookingRepository.findByIdWithGuestsAndRooms(id).map(booking -> {
             booking.setGuest(updatedBooking.getGuest());
             booking.setRoom(updatedBooking.getRoom());
             booking.setCheckIn(updatedBooking.getCheckIn());
@@ -47,7 +43,7 @@ public class BookingService {
     }
 
     public Optional<Booking> patchBooking(Long id, Booking patchedBooking) {
-        return bookingRepository.findById(id).map(booking -> {
+        return bookingRepository.findByIdWithGuestsAndRooms(id).map(booking -> {
             if (patchedBooking.getGuest() != null) booking.setGuest(patchedBooking.getGuest());
             if (patchedBooking.getRoom() != null) booking.setRoom(patchedBooking.getRoom());
             if (patchedBooking.getCheckIn() != null) booking.setCheckIn(patchedBooking.getCheckIn());
