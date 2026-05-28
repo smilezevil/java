@@ -25,6 +25,6 @@ public class OpenApiConfig {
                                 .url("https://github.com/smilezevil")
                                 .email("demyanchuknastya2018@gmail.com"))
                         .license(new License().name("Apache 2.0").url("https://springdoc.org")))
-                .servers(List.of(new Server().url("/").description("Прихований локальний сервер")));
+                .servers(List.of(new Server().url("._.")));
     }
 }
