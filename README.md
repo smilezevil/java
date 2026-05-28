@@ -46,4 +46,23 @@ Hotel management system — Variant 3:
 - Models: Room, Guest, Booking, Staff, Service
 - HTTP methods: GET, POST, PUT, PATCH, DELETE for each model
 
+### Lab 8 — Spring Data JDBC
+- Implemented database communication using `JdbcTemplate`
+- Custom SQL queries for fetching specific data (e.g., retrieving only available rooms)
+- Separation of custom JDBC repositories from standard JPA repositories
+
+### Lab 9 — Advanced Spring Data JPA & Hibernate
+- Entity relationships modeling (`@OneToOne`, `@ManyToOne`, `@ManyToMany`)
+- Performance optimization: diagnosed and solved the **N+1 select problem** using `@Query` and `JOIN FETCH`
+- Disabled `open-in-view` for better database connection management
+- Database migration and automated initial data seeding using **Liquibase**
+- Implemented API Pagination using `Pageable` and `Page<T>`
+- Advanced transaction management via `@Transactional` with appropriate `Propagation` parameters
+
+### Lab 10 — API Documentation (Swagger / OpenAPI)
+- Automated REST API documentation using `springdoc-openapi`
+- Detailed endpoint descriptions with `@Tag`, `@Operation`, and HTTP status codes via `@ApiResponses`
+- Safe data representation: comprehensively documenting `DTOs` via `@Schema` while completely hiding internal `@Entity` database models
+- Custom `OpenAPI` bean configuration (project metadata, contact info, hiding internal server URLs)
+  
 made with 💚 by smilezevil
